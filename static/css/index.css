@@ -1,0 +1,106 @@
+body {
+    padding: 0;
+    margin: 0;
+    font-size: 18px;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+button {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+#header {
+    background-color: #596275;
+    height: 50px;
+}
+
+#main {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+#left {
+    width: 25%;
+}
+
+.CodeMirror {
+    margin-top: 5px !important;
+    margin-bottom: 20px !important;
+}
+
+#center {
+
+}
+
+#choose-x {
+    margin: 0 3px;
+    padding: 5px;
+}
+
+.x-button-line{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.r-button-line{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.button-group {
+    margin-top: 15px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+.button-group .button {
+    display: flex;
+    color: white;
+    background-color: #596275;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.button.checked {
+    background-color: #303952;
+}
+
+.button-group .button:first-child {
+    border-radius: .5rem 0 0 .5rem;
+}
+
+.button-group .button:last-child {
+    border-radius: 0 .5rem .5rem 0;
+}
+
+#right {
+    width: 25%;
+}
+
+.content {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.lint-error {
+    font-size: 70%;
+    background: #ffa;
+    color: #a00;
+    padding: 2px 5px 3px;
+}
+
+.lint-error-icon {
+    color: white;
+    background-color: red;
+    font-weight: bold;
+    border-radius: 50%;
+    padding: 0 3px;
+    margin-right: 7px;
+}

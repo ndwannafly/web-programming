@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web_lab1</title>
+    <script type="text/javascript" charset="UTF-8"
+            src="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraphcore.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/jsxgraph/distrib/jsxgraph.css"/>
+
+    <script type="text/javascript" charset="UTF-8" src="assets/codemirror-5.62.2/lib/codemirror.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="assets/codemirror-5.62.2/addon/selection/active-line.js"></script>
+    <script type="text/javascript" charset="UTF-8" src="assets/codemirror-5.62.2/mode/javascript/javascript.js"></script>
+    <link rel="stylesheet" href="assets/codemirror-5.62.2/lib/codemirror.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+
+    <script type="text/javascript" src="js/index.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+<div id="header">
+
+</div>
+<div id="main">
+    <div id="left">
+        <div class="button-group">
+            <button class="button checked" id="advanced">Advanced</button>
+            <button class="button" id="simple">Simple</button>
+        </div>
+
+        <div id="advanced-content">
+            <label for="current">Current points</label>
+            <textarea id="current" required autofocus></textarea>
+
+        </div>
+
+        <div id="simple-content" style="display: none">
+            <label for="simple">Select X: </label>
+            <div class="x-button-line">
+                <input type="radio" id="x_-3" name="x_value" value="-3" checked>
+                <label for="x_-3">-3</label><br>
+                <input type="radio" id="x_-2" name="x_value" value="-2">
+                <label for="x_-2">-2</label><br>
+                <input type="radio" id="x_-1" name="x_value" value="-1">
+                <label for="x_-1">-1</label><br>
+                <input type="radio" id="x_0" name="x_value" value="0">
+                <label for="x_0">0</label><br>
+                <input type="radio" id="x_1" name="x_value" value="1">
+                <label for="x_1">1</label><br>
+                <input type="radio" id="x_2" name="x_value" value="2">
+                <label for="x_2">2</label><br>
+                <input type="radio" id="x_3" name="x_value" value="3">
+                <label for="x_3">3</label><br>
+                <input type="radio" id="x_4" name="x_value" value="4">
+                <label for="x_4">4</label><br>
+                <input type="radio" id="x_5" name="x_value" value="5">
+                <label for="x_5">5</label><br>
+            </div>
+            <label for="simple">Enter Y: </label>
+            <label for="simple">
+                <textarea id="y_value" rows="1" cols="5" maxlength="5" style="margin-left: 10px; margin-top: 5px;" required autofocus></textarea>
+            </label>
+            <br>
+            <label for="simple">
+                Select R:
+            </label>
+            <div class="r-button-line">
+                <input type="radio" id="r_1" name="r_value" value="1" checked>
+                <label for="r_1">1</label><br>
+                <input type="radio" id="r_1.5" name="r_value" value="1.5">
+                <label for="r_1.5">1.5</label><br>
+                <input type="radio" id="r_2" name="r_value" value="2">
+                <label for="r_2">2</label><br>
+                <input type="radio" id="r_2.5" name="r_value" value="2.5">
+                <label for="r_2.5">2.5</label><br>
+                <input type="radio" id="r_3" name="r_value" value="3">
+                <label for="r_3">3</label><br>
+            </div>
+
+            <div class="button-group">
+                <input class="button" type="submit" value="Submit" id="submit-button">
+            </div>
+        </div>
+        <label for="input">Selected points</label>
+        <textarea id="input" required autofocus></textarea>
+        <div class="button-group">
+            <input class="button" type="submit" value="Clear" id="clear-button">
+        </div>
+    </div>
+    <div id="center">
+        <div class="button-group">
+            <button class="button" id="view mode">View mode</button>
+            <button class="button checked" id="select mode">Select mode</button>
+            <button class="button" id="delete mode">Delete mode</button>
+        </div>
+        <div id="box1" class="jxgbox" style="width: 700px; height: 700px;"></div>
+    </div>
+    <div id="right">
+        <div class="button-group">
+            <button class="button" id="overview">Overview</button>
+            <button class="button" id="instruction">Instruction</button>
+            <button class="button checked" id="notation">Notation</button>
+        </div>
+        <div class="content" id="notationContent">
+            <p>Click on the plane to show the point. There are 2 cases:</p>
+            <ul>
+                <li>Red point - the point is outside the chosen area.</li>
+                <li>Green point - the point is in the chosen area.</li>
+            </ul>
+        </div>
+
+        <div class="content" id="instructionContent" style="display: none">
+            <p>This is instruction content</p>
+        </div>
+
+        <div class="content" id="overviewContent" style="display: none">
+            <p>This is overview content</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
