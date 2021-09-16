@@ -1,4 +1,10 @@
 window.onload = () => {
+    function isNumeric(str){
+        if( typeof str != "string") return false;
+        return !isNaN(str) && !isNaN(parseFloat(str));
+    }
+
+
     //init board
     let now;
     let board = JXG.JSXGraph.initBoard('box1',{
@@ -24,10 +30,15 @@ window.onload = () => {
         mode: 'text',
         readOnly: true
     })
-    let columns = '(x,y,r)              result      time';
     input.setSize(null, 300);
+    let columns = '(x,y,r)              result      time';
 
-    const addPoint = async (x, y, r, isReset) => await fetch('http://localhost:63342/firstPHP/index.php?x=' + x + '&y=' + y + '&r=' + r, {
+    const clearTable = () => {
+        points.map((point) => board.removeObject(point));
+        points.length = 0;
+        input.setValue(columns);
+    }
+    const addPoint = async (x, y, r, time) => await fetch('http://localhost:63342/firstPHP/index.php?x=' + x + '&y=' + y + '&r=' + r + '&time=' + time, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -42,40 +53,73 @@ window.onload = () => {
             }
         })
         .then(result => {
+            console.log(result);
             points.push(board.create('point', [x, y], {
                 color: result ? 'green' : 'red',
-                label: {visible : false}
+                label: {visible: false}
             }));
-            if(result) {
-                localStorage.setItem('points', localStorage.getItem('points') + `${x} ${y} ${r} 1 `);
-            } else{
-                localStorage.setItem('points', localStorage.getItem('points') + `${x} ${y} ${r} 0 `);
-            }
-            if(!isReset) input.setValue(`${input.getValue()}\n(${(x>=0) ? '+' : ''}${parseFloat(x).toFixed(2)}, ${(y>=0) ? '+' : ''}${parseFloat(y).toFixed(2)}, ${r})    ${result ? 'inside ' : 'outside'}    ${now}`);
-
-            localStorage.setItem('table', input.getValue());
+            input.setValue(`${input.getValue()}\n(${(x>=0) ? '+' : ''}${parseFloat(x).toFixed(2)}, ${(y>=0) ? '+' : ''}${parseFloat(y).toFixed(2)},${r})    ${result ? 'inside ' : 'outside'}    ${now}`);
         })
         .catch(error => {
             alert(error);
         });
 
-    if(localStorage.getItem('table')){
-        input.setValue(localStorage.getItem('table'));
-        let storedPoints = localStorage.getItem('points');
-        if(storedPoints.length > 0) {
-            let arrayPoints = storedPoints.split(' ');
-            arrayPoints.pop();
-            console.log(arrayPoints);
-            for(let i = 0; i < arrayPoints.length; i+=4){
-                addPoint(arrayPoints[i], arrayPoints[i+1], arrayPoints[i+2], true);
-                console.log('add: ' + arrayPoints[i] + ' ' + arrayPoints[i+1] + ' ' + arrayPoints[i+2])
-            }
-        }
-    } else {
-        localStorage.setItem('table', columns);
-        localStorage.setItem('points', '');
+
+    let restoredPoints = (coordsArray) => {
         input.setValue(columns);
+        for(let i = 0; i < coordsArray.length; i+=5) {
+            points.push(board.create('point', [coordsArray[i], coordsArray[i + 1]], {
+                color: coordsArray[i + 3] ? 'green' : 'red',
+                label: {visible: false}
+            }));
+            input.setValue(`${input.getValue()}\n(${(coordsArray[i] >= 0) ? '+' : ''}${parseFloat(coordsArray[i]).toFixed(2)}, ${(coordsArray[i + 1] >= 0) ? '+' : ''}${parseFloat(coordsArray[i + 1]).toFixed(2)},${coordsArray[i + 2]})    ${coordsArray[i + 3] ? 'inside ' : 'outside'}    ${coordsArray[i + 4]}`);
+        }
     }
+
+    const fetchTable = async () => await fetch('http://localhost:63342/firstPHP/index.php?fetchTable', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(response => {
+            if(response.ok){
+                return response.json();
+            } else {
+                alert('Server is not connected');
+            }
+        })
+        .then(result => {
+            restoredPoints(Object.values(result));
+        })
+        .catch(error => {
+            alert(error);
+        })
+
+    const fetchClear = async () => await fetch('http://localhost:63342/firstPHP/index.php?clear', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(response => {
+            if(response.ok){
+                return response.json();
+            } else {
+                alert('Server is not connected');
+            }
+        })
+        .then(result => {
+            console.log(result);
+            if (result) clearTable();
+            else alert('can\'t clear!');
+        })
+        .catch(error => {
+            alert(error);
+        })
+
+    // start hear
+    fetchTable();
 
     r.on('mousedrag', () => {
         points.map((point) => board.removeObject(point));
@@ -108,14 +152,6 @@ window.onload = () => {
     current.setSize(null, 30);
     current.setValue('(0, 0)');
 
-
-    /*input.on('keyup', (e, i) => {
-        if (i.code === 'Enter') {
-            let lineIndex = input.getCursor().line-1;
-            let content = input.getValue().split('\n')[lineIndex].trim().split(' ');
-            addPoint(content[0], content[1], r.Value(), content[2]);
-        }
-    });*/
 
     // first corner (triangle)
     board.create('polygon', [[0,0], [0, halfR], [R,0]],{
@@ -159,7 +195,7 @@ window.onload = () => {
     document.getElementById('box1').addEventListener('mousedown', (e,i) => {
         let {x, y} = getXY(e, i);
         now = new Date().toString().substr(15,9);
-        addPoint(x, y, r.Value(), false);
+        addPoint(x, y, r.Value(), now);
     });
 
     let advancedInput = document.getElementById('advanced');
@@ -287,17 +323,9 @@ window.onload = () => {
     })
 
     document.getElementById('clear-button').addEventListener('click', () => {
-        points.map((point) => board.removeObject(point));
-        points.length = 0;
-        input.setValue(columns);
-        localStorage.removeItem('table');
-        localStorage.removeItem('points');
+        fetchClear();
     })
 
-    function isNumeric(str){
-        if( typeof str != "string") return false;
-        return !isNaN(str) && !isNaN(parseFloat(str));
-    }
 
     document.getElementById('submit-button').addEventListener('click', () => {
 
@@ -333,11 +361,7 @@ window.onload = () => {
             }
         }
 
-        console.log(x);
-        console.log(y);
-        console.log(r);
-
         now = new Date().toString().substr(15,9);
-        addPoint(x, y, r, false);
+        addPoint(x, y, r, now);
     })
 }
