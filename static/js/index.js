@@ -222,46 +222,30 @@ window.onload = () => {
         }
     })
 
-    let viewModeInput = document.getElementById('view mode');
-    let selectModeInput = document.getElementById('select mode');
-    let deleteModeInput = document.getElementById('delete mode');
+    let darkModeInput = document.getElementById('dark mode');
+    let lightModeInput = document.getElementById('light mode');
 
 
-    viewModeInput.addEventListener('click', () => {
-        if(!viewModeInput.classList.contains('checked')){
-            viewModeInput.classList.toggle('checked');
+    darkModeInput.addEventListener('click', () => {
+        if(!darkModeInput.classList.contains('checked')){
+            darkModeInput.classList.toggle('checked');
+            document.body.classList.toggle("dark-theme");
         }
-        if(selectModeInput.classList.contains('checked')){
-            selectModeInput.classList.toggle('checked');
-        }
-        if(deleteModeInput.classList.contains('checked')){
-            deleteModeInput.classList.toggle('checked');
+        if(lightModeInput.classList.contains('checked')){
+            lightModeInput.classList.toggle('checked');
         }
     })
 
-    selectModeInput.addEventListener('click', () => {
-        if(viewModeInput.classList.contains('checked')){
-            viewModeInput.classList.toggle('checked');
+    lightModeInput.addEventListener('click', () => {
+        if(darkModeInput.classList.contains('checked')){
+            darkModeInput.classList.toggle('checked');
         }
-        if(!selectModeInput.classList.contains('checked')){
-            selectModeInput.classList.toggle('checked');
-        }
-        if(deleteModeInput.classList.contains('checked')){
-            deleteModeInput.classList.toggle('checked');
+        if(!lightModeInput.classList.contains('checked')){
+            lightModeInput.classList.toggle('checked');
+            document.body.classList.toggle("dark-theme");
         }
     })
 
-    deleteModeInput.addEventListener('click', () => {
-        if(viewModeInput.classList.contains('checked')){
-            viewModeInput.classList.toggle('checked');
-        }
-        if(selectModeInput.classList.contains('checked')){
-            selectModeInput.classList.toggle('checked');
-        }
-        if(!deleteModeInput.classList.contains('checked')){
-            deleteModeInput.classList.toggle('checked');
-        }
-    })
 
     let overviewInput = document.getElementById('overview');
     let instructionInput = document.getElementById('instruction');
@@ -364,4 +348,16 @@ window.onload = () => {
         now = new Date().toString().substr(15,9);
         addPoint(x, y, r, now);
     })
+
+
+
+/*    document.getElementById('clear-button').addEventListener('mouseenter', () => {
+        let randomX = Math.floor(Math.random() * (window.innerWidth - 150));
+        let randopmY = Math.floor(Math.random() * (window.innerHeight - 150));
+        console.log(randomX + ' ' + randomY);
+        let clearButton = document.getElementById('clear-button');
+        clearButton.style.left = randomX.toString() + 'px';
+        clearButton.style.top = randomY.toString() + 'px';
+    })*/
+
 }

@@ -1,3 +1,16 @@
+:root{
+    --primary-color: white;
+    --secondary-color: #596275;
+    --buttonChecked-color: #303952
+}
+
+.dark-theme{
+    --primary-color: #596275;
+    --secondary-color: black;
+    --buttonChecked-color: black
+}
+
+
 body {
     padding: 0;
     margin: 0;
@@ -5,16 +18,48 @@ body {
     font-family: 'JetBrains Mono', monospace;
 }
 
+#intro{
+    border-right: solid 10px;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 28px;
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--primary-color);
+    margin:0 auto;
+}
+
+/* Animation */
+#intro{
+    animation: animated-text 4s steps(29, end) 1s 1 normal both, animated-cursor 600ms steps(29,end) infinite;
+}
+
+/*
+    text animation
+ */
+@keyframes animated-text {
+    from{width: 0;}
+    to{width: 1260px;}
+}
+
+/*
+    cursor animation
+ */
+@keyframes animated-cursor {
+    from{border-right-color: white;}
+    to{border-right-color: transparent;}
+}
+
 button {
     font-family: 'JetBrains Mono', monospace;
 }
 
 #header {
-    background-color: #596275;
+    background-color: var(--secondary-color);
     height: 50px;
 }
 
 #main {
+    background: var(--primary-color);
     display: flex;
     justify-content: space-around;
     align-items: flex-start;
@@ -61,14 +106,14 @@ button {
 .button-group .button {
     display: flex;
     color: white;
-    background-color: #596275;
+    background-color: var(--secondary-color);
     border: none;
     padding: 10px;
     font-size: 16px;
 }
 
 .button.checked {
-    background-color: #303952;
+    background-color: var(--buttonChecked-color);
 }
 
 .button-group .button:first-child {
@@ -104,3 +149,10 @@ button {
     padding: 0 3px;
     margin-right: 7px;
 }
+
+/*
+#clear-button{
+    position: absolute;
+    top: 620px;
+    left: 160px;
+}*/
